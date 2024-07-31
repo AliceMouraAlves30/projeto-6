@@ -1,0 +1,69 @@
+# Análise e Previsão de Encargos de Seguro de Saúde
+
+Este projeto realiza uma análise exploratória de dados, testes de hipóteses estatísticas e modelagem preditiva para entender os fatores que afetam os encargos de seguro de saúde. Utilizamos um conjunto de dados de seguro de saúde e aplicamos técnicas de regressão linear para prever os encargos com base em diversas variáveis.
+
+## Estrutura do Projeto
+
+- `seguro_saude_analise.py`: Script principal contendo todo o código para leitura dos dados, análise exploratória, testes de hipóteses e modelagem preditiva.
+- `README.md`: Este arquivo, fornecendo uma visão geral do projeto.
+- `LICENSE`: Licença do projeto.
+- `.gitignore`: Arquivo para especificar quais arquivos e diretórios devem ser ignorados pelo Git.
+- `requirements.txt`: Lista de dependências do projeto.
+
+## Requisitos
+
+- Python 3.x
+- Bibliotecas:
+  - pandas
+  - numpy
+  - matplotlib
+  - seaborn
+  - scipy
+  - scikit-learn
+
+## Instalação
+
+1. Clone este repositório:
+    ```bash
+    git clone https://github.com/seu-usuario/analise-seguro-saude.git
+    cd analise-seguro-saude
+    ```
+
+2. Crie um ambiente virtual e ative-o:
+    ```bash
+    python -m venv env
+    source env/bin/activate  # Para Windows, use `env\Scripts\activate`
+    ```
+
+3. Instale as dependências:
+    ```bash
+    pip install -r requirements.txt
+    ```
+
+## Uso
+
+1. Execute o script `seguro_saude_analise.py`:
+    ```bash
+    python seguro_saude_analise.py
+    ```
+
+2. O script irá realizar a análise exploratória dos dados, testes de hipóteses e modelagem preditiva. Os resultados serão exibidos no console e as visualizações gráficas serão geradas.
+
+## Resultados
+
+- **Análise Exploratória de Dados (EDA)**: Visualização das distribuições das variáveis e matriz de correlação.
+- **Teste de Hipóteses Estatísticas**: Teste para verificar se há diferenças significativas nos encargos do seguro entre fumantes e não fumantes, e entre homens e mulheres.
+- **Modelagem Preditiva**: Modelo de regressão linear para prever os encargos do seguro com base em idade, IMC, número de filhos, sexo e hábito de fumar.
+
+## Contribuição
+
+Contribuições são bem-vindas! Por favor, abra uma issue ou envie um pull request.
+
+## Licença
+
+Este projeto está licenciado sob os termos da licença MIT. Veja o arquivo `LICENSE` para mais detalhes.
+
+## Contato
+
+- Autor: Seu Nome
+- Email: seu-email@example.com
