@@ -1,0 +1,22 @@
+# Ambiente virtual
+env/
+
+# Arquivos do Jupyter Notebook
+.ipynb_checkpoints/
+
+# Arquivos de configuração específicos do sistema
+*.DS_Store
+*.vscode/
+
+# Arquivos de log
+*.log
+
+# Arquivos do Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Configurações do IDE
+.idea/
+.vscode/
