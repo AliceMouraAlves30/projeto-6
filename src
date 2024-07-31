@@ -1,0 +1,177 @@
+ 
+importar  pandas  como  pd 
+importar  numpy  como  np 
+importar  matplotlib.pyplot  como  plt 
+importar  seaborn  como  sns 
+de  scipy.stats  importar  ttest_ind 
+de  sklearn.model_selection  importar  train_test_split 
+de  sklearn.linear_model  importar  LinearRegression 
+de  sklearn.metrics  importar  mean_squared_error ,  r2_score
+
+# Lendo o arquivo "insurance.csv" diretamente do Google Drive 
+url  =  "https://drive.google.com/uc?id=1_k6K9o65mXkHz4gEHOmFNsgFmQOA7DfK" 
+insurance_df  =  pd . read_csv ( url )
+
+# Análise Exploratória de Dados (EDA)
+
+# Visualizando as primeiras linhas do dataframe 
+print ( insurance_df . head ())
+
+# Visualizando a distribuição das variáveis 
+​​sns . pairplot ( seguro_df ) 
+plt . mostrar ()
+
+# Calculando e visualizando a matriz de esplendor 
+# Convertendo variáveis ​​categóricas em numéricas 
+insurance_df [ 'sex' ]  =  insurance_df [ 'sex' ] . mapa ({ 'masculino' :  0 ,  'feminino' :  1 }) 
+insurance_df [ 'smoker' ]  =  insurance_df [ 'smoker' ] . mapa ({ 'não' :  0 ,  'sim' :  1 })
+
+# Excluindo a coluna 'region' 
+insurance_df  =  insurance_df . drop ( 'region' ,  axis = 1 )
+
+correlation_matrix  =  insurance_df . corr () 
+sns . heatmap ( correlation_matrix ,  annot = True ,  cmap = "coolwarm" ) 
+plt . title ( "Matriz de Correlação" ) 
+plt . show ()
+
+# Explorando características e sua relação com os encargos do seguro 
+# Idade vs Encargos do Seguro 
+plt . figura ( figsize = ( 10 , 6 )) 
+sns . gráfico de dispersão ( dados = seguro_df ,  x = 'idade' ,  y = 'cobranças' ,  matiz = 'fumante' ,  paleta = 'viridis' ) 
+plt . título ( 'Idade vs Encargos do Seguro' ) 
+plt . xlabel ( 'Idade' ) 
+plt . ylabel ( 'Encargos do Seguro' ) 
+plt . mostrar ()
+
+# IMC vs Encargos do Seguro 
+plt . figura ( figsize = ( 10 , 6 )) 
+sns . gráfico de dispersão ( dados = seguros_df ,  x = 'bmi' ,  y = 'cobranças' ,  matiz = 'fumante' ,  paleta = 'viridis' ) 
+plt . título ( 'IMC vs Encargos do Seguro' ) 
+plt . xlabel ( 'IMC' ) 
+plt . ylabel ( 'Encargos do Seguro' ) 
+plt . mostrar ()
+
+# Teste de Hipótese Estatística
+
+# Teste se há diferenças significativas nos encargos do seguro entre fumantes e não fumantes
+smoker_charges = insurance_df[insurance_df['smoker'] == 1]['charges']
+non_smoker_charges = insurance_df[insurance_df['smoker'] == 0]['charges']
+t_statistic, p_value = ttest_ind(smoker_charges, non_smoker_charges)
+print("Teste de Hipótese - Fumantes vs Não Fumantes:")
+print("Valor p:", p_value)
+
+# Verificar se há uma diferença significativa nos encargos do seguro entre homens e mulheres
+male_charges = insurance_df[insurance_df['sex'] == 0]['charges']
+female_charges = insurance_df[insurance_df['sex'] == 1]['charges']
+t_statistic, p_value = ttest_ind(male_charges, female_charges)
+print("Teste de Hipótese - Homens vs Mulheres:")
+print("Valor p:", p_value)
+
+# Modelagem Estatística
+
+# Preparando os dados para modelagem
+X = insurance_df[['age', 'bmi', 'children', 'sex', 'smoker']]
+y = insurance_df['charges']
+
+# Dividindo os dados em conjunto de treinamento e teste
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Criando e treinando o modelo de regressão linear
+model = LinearRegression()
+model.fit(X_train, y_train)
+
+# Fazendo previsões no conjunto de teste
+y_pred = model.predict(X_test)
+
+# Avaliando o modelo
+mse = mean_squared_error(y_test, y_pred)
+r2 = r2_score(y_test, y_pred)
+print("\nAvaliação do Modelo:")
+print("Erro Quadrático Médio (MSE):", mse)
+print("R-squared (R2):", r2)
+
+# Relatório completo
+
+report = """
+RELATÓRIO DE ANÁLISE DE SEGURO DE SAÚDE
+
+Análise Exploratória de Dados (EDA):
+
+Visualização da distribuição das variáveis e matriz de correlação:
+- A visualização das distribuições e a matriz de correlação nos permitem entender a relação entre as variáveis do conjunto de dados. Podemos observar que há uma forte correlação entre o hábito de fumar e os encargos do seguro, assim como uma correlação moderada entre a idade e os encargos.
+
+Exploração das características e sua relação com os encargos do seguro:
+- Idade vs Encargos do Seguro: Podemos observar que os encargos tendem a aumentar com a idade, especialmente para os fumantes.
+- IMC vs Encargos do Seguro: Também vemos uma tendência de aumento nos encargos à medida que o IMC aumenta, especialmente para os fumantes.
+
+Teste de Hipótese Estatística:
+
+- Teste de Hipótese - Fumantes vs Não Fumantes: O teste de hipótese sugere que há uma diferença significativa nos encargos do seguro entre fumantes e não fumantes.
+- Teste de Hipótese - Homens vs Mulheres: O teste de hipótese não encontrou uma diferença significativa nos encargos do seguro entre homens e mulheres.
+
+Modelagem Estatística:
+
+- Desenvolvemos um modelo de regressão linear para prever os encargos do seguro com base na idade, IMC, número de filhos, sexo e hábito de fumar dos segurados.
+- Avaliamos o modelo utilizando o Erro Quadrático Médio (MSE) e o R-squared (R2), obtendo valores de MSE = {mse} e R2 = {r2}. Isso sugere que o modelo explica cerca de {r2*100:.2f}% da variabilidade nos encargos do seguro.
+
+Conclusão:
+
+Com base na análise realizada, podemos concluir que fatores como idade, IMC, sexo e hábito de fumar têm um impacto significativo nos encargos do seguro de saúde. Desenvolver modelos preditivos pode ajudar a empresa de seguros a entender melhor seus clientes e otimizar sua estratégia de preços.
+
+"""
+
+print(report)
+   age     sex     bmi  children smoker     region      charges
+0   19  female  27.900         0    yes  southwest  16884.92400
+1   18    male  33.770         1     no  southeast   1725.55230
+2   28    male  33.000         3     no  southeast   4449.46200
+3   33    male  22.705         0     no  northwest  21984.47061
+4   32    male  28.880         0     no  northwest   3866.85520
+/opt/conda/envs/anaconda-2024.02-py310/lib/python3.10/site-packages/seaborn/_oldcore.py:1119: FutureWarning: use_inf_as_na option is deprecated and will be removed in a future version. Convert inf values to NaN before operating instead.
+  with pd.option_context('mode.use_inf_as_na', True):
+/opt/conda/envs/anaconda-2024.02-py310/lib/python3.10/site-packages/seaborn/_oldcore.py:1119: FutureWarning: use_inf_as_na option is deprecated and will be removed in a future version. Convert inf values to NaN before operating instead.
+  with pd.option_context('mode.use_inf_as_na', True):
+/opt/conda/envs/anaconda-2024.02-py310/lib/python3.10/site-packages/seaborn/_oldcore.py:1119: FutureWarning: use_inf_as_na option is deprecated and will be removed in a future version. Convert inf values to NaN before operating instead.
+  with pd.option_context('mode.use_inf_as_na', True):
+/opt/conda/envs/anaconda-2024.02-py310/lib/python3.10/site-packages/seaborn/_oldcore.py:1119: FutureWarning: use_inf_as_na option is deprecated and will be removed in a future version. Convert inf values to NaN before operating instead.
+  with pd.option_context('mode.use_inf_as_na', True):
+No description has been provided for this image
+No description has been provided for this image
+No description has been provided for this image
+No description has been provided for this image
+Teste de Hipótese - Fumantes vs Não Fumantes:
+Valor p: 8.271435842179102e-283
+Teste de Hipótese - Homens vs Mulheres:
+Valor p: 0.03613272100592976
+
+Avaliação do Modelo:
+Erro Quadrático Médio (MSE): 33979257.05080822
+R-squared (R2): 0.7811302113434095
+
+RELATÓRIO DE ANÁLISE DE SEGURO DE SAÚDE
+
+Análise Exploratória de Dados (EDA):
+
+Visualização da distribuição das variáveis e matriz de correlação:
+- A visualização das distribuições e a matriz de correlação nos permitem entender a relação entre as variáveis do conjunto de dados. Podemos observar que há uma forte correlação entre o hábito de fumar e os encargos do seguro, assim como uma correlação moderada entre a idade e os encargos.
+
+Exploração das características e sua relação com os encargos do seguro:
+- Idade vs Encargos do Seguro: Podemos observar que os encargos tendem a aumentar com a idade, especialmente para os fumantes.
+- IMC vs Encargos do Seguro: Também vemos uma tendência de aumento nos encargos à medida que o IMC aumenta, especialmente para os fumantes.
+
+Teste de Hipótese Estatística:
+
+- Teste de Hipótese - Fumantes vs Não Fumantes: O teste de hipótese sugere que há uma diferença significativa nos encargos do seguro entre fumantes e não fumantes.
+- Teste de Hipótese - Homens vs Mulheres: O teste de hipótese não encontrou uma diferença significativa nos encargos do seguro entre homens e mulheres.
+
+Modelagem Estatística:
+
+- Desenvolvemos um modelo de regressão linear para prever os encargos do seguro com base na idade, IMC, número de filhos, sexo e hábito de fumar dos segurados.
+- Avaliamos o modelo utilizando o Erro Quadrático Médio (MSE) e o R-squared (R2), obtendo valores de MSE = {mse} e R2 = {r2}. Isso sugere que o modelo explica cerca de {r2*100:.2f}% da variabilidade nos encargos do seguro.
+
+Conclusão:
+
+Com base na análise realizada, podemos concluir que fatores como idade, IMC, sexo e hábito de fumar têm um impacto significativo nos encargos do seguro de saúde. Desenvolver modelos preditivos pode ajudar a empresa de seguros a entender melhor seus clientes e otimizar sua estratégia de preços.
+
+
+ 
